@@ -10,8 +10,8 @@ const app = express();
 const PORT = 8080;
 app.use(cors());
 
-app.use(express.json({ extended: false }))
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
 app.use(API);
 initDatabase();
 
@@ -19,7 +19,4 @@ app.listen(PORT, (err) => {
     if (!err) {
         console.log("listening on port".blue, PORT);
     }
-})
-app.get('/', (req, res) => {
-    res.json({ hello: 'world' });
-})
+});
