@@ -2,7 +2,7 @@ const express = require('express');
 let colors = require('colors');
 const cors = require('cors');
 const API = require('./api');
-const { initDatabase } = require('./repository')
+const { initDatabase } = require('./repositories')
 
 
 const app = express();
