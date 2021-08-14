@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cloudinary": "^1.26.3",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "formidable": "^1.2.2",
     "mongodb": "^4.1.0"
   },
   "devDependencies": {

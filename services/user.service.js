@@ -2,6 +2,7 @@
 const { db } = require('../repositories')
 const Post = require('./../models/post.model');
 
+
 class UserServices {
     async upPost(owner_id, title, titleImg, content, tags) {
         const newPost = new Post(owner_id, title, titleImg, content, tags);
@@ -88,7 +89,9 @@ class UserServices {
             let err = "Lỗi khi đăng bài viết";
             return err
         }
-
     }
+    // asyn uploadImg(){
+
+    // }
 }
 module.exports = UserServices;
