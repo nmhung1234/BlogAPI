@@ -12,9 +12,9 @@ const initDatabase = () => {
     client.connect().then(() => {
         console.log("db connected");
         const connected = client.db("Blog");
-        db.user = connected.collection("user")
-        db.post = connected.collection("post")
-        db.tag = connected.collection("tag")
+        db.user = connected.collection("user");
+        db.post = connected.collection("post");
+        db.tag = connected.collection("tag");
     })
 }
 
