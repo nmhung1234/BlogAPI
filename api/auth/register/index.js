@@ -1,27 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const User = require('./../../../models/user.model.js');
-const { db } = require('../../../repositories');
-const { generatePassword } = require('../../../Utils')
+const UserServices = require('./../../../services/user.service')
+const UserSv = new UserServices();``
 
 router.post('/register', async function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
 
-    const genPass = generatePassword(password);
-    const newUser = new User(email, genPass.hassedPassword, username, genPass.salt);
-    
-    const findEmail = await db.user.findOne({ "email": email });
-    const findUsername = await db.user.findOne({ "username": username });
-    if (findEmail?.email) {
-        res.send("Email đã tồn tại")
-    } else if (findUsername?.username) {
-        res.send("Username đã tồn tại")
-    } else {
-        db.user.insertOne(newUser)
-        res.send(newUser);
-    }
+    const newUser = await UserSv.register(email, username, password);
+    res.send(newUser);
 })
 
 module.exports = router;

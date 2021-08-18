@@ -1,9 +1,56 @@
 
-const { db } = require('../repositories')
+const { db } = require('../repositories');
 const Post = require('./../models/post.model');
-
-
+const User = require('./../models/user.model');
+const { generatePassword, checkPassword } = require('./../Utils');
+const UserModal = new User();
 class UserServices {
+    async login(username, password) {
+
+        const userFound = await db.user.findOne({ username: username });
+        if (userFound) {
+            let checkpass = checkPassword(password, userFound.salt, userFound.password);
+            if (checkpass) {
+                let user = await db.user.aggregate([
+                    {
+                        $match: {
+                            username: userFound.username
+                        }
+                    },
+                    {
+                        $unset: ["password", "salt"]
+                    },
+                ]).toArray();
+                const token = UserModal.generateToken(userFound._id, userFound.username, userFound.type)
+                const refreshToken = UserModal.generateRefreshToken(userFound._id, userFound.username, userFound.type)
+                return {
+                    user, token, refreshToken
+                }
+            } else {
+                return ("Mật khẩu không chính xác");
+            }
+        } else {
+            return ("Tên tài khoản không không chính xác");
+        }
+    }
+    async register(email, username, password) {
+
+        const findEmail = await db.user.findOne({ "email": email });
+        const findUsername = await db.user.findOne({ "username": username });
+
+        if (findEmail?.email) {
+            return ("Email đã tồn tại")
+        } else if (findUsername?.username) {
+            return ("Username đã tồn tại")
+        } else {
+            const genPass = generatePassword(password);
+            const newUser = User(email, genPass.hassedPassword, username, genPass.salt);
+            await db.user.insertOne(newUser);
+            const token = UserModal.generateToken(userFound._id, userFound.username, userFound.type);
+            const refreshToken = UserModal.generateRefreshToken(userFound._id, userFound.username, userFound.type)
+            return ({ newUser, token, refreshToken });
+        }
+    }
     async upPost(owner_id, title, titleImg, content, tags) {
         const newPost = new Post(owner_id, title, titleImg, content, tags);
         const ss = await db.post.insertOne(newPost);
@@ -90,8 +137,5 @@ class UserServices {
             return err
         }
     }
-    // asyn uploadImg(){
-
-    // }
 }
 module.exports = UserServices;

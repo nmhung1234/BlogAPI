@@ -1,11 +1,11 @@
 const express = require('express');
-let colors = require('colors');
 const cors = require('cors');
-const API = require('./api');
 const { initDatabase } = require('./repositories')
+const API = require('./api');
+let colors = require('colors');
+
 
 const app = express();
-
 const PORT = 8080;
 app.use(cors());
 
