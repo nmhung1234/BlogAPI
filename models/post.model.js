@@ -1,10 +1,10 @@
 const { ObjectId } = require('mongodb')
 const { generateTime } = require('../Utils')
 class Post {
-    constructor(owner_id, title, titleImg, content, tags) {
+    constructor(owner_id, title, coverImg, content, tags) {
         this.owner_id = new ObjectId(owner_id);
         this.title = title;
-        this.titleImg = titleImg;
+        this.coverImg = coverImg;
         this.content = content;
         this.comments = {};
         this.like = 0;

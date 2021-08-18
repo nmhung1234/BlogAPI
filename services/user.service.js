@@ -51,8 +51,8 @@ class UserServices {
             return ({ newUser, token, refreshToken });
         }
     }
-    async upPost(owner_id, title, titleImg, content, tags) {
-        const newPost = new Post(owner_id, title, titleImg, content, tags);
+    async upPost(owner_id, title, coverImg, content, tags) {
+        const newPost = new Post(owner_id, title, coverImg, content, tags);
         const ss = await db.post.insertOne(newPost);
         if (ss) {
             return newPost;
