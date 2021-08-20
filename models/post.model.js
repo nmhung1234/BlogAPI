@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb')
-const { generateTime } = require('../Utils')
+const { generateTime, generateKeyString } = require('../Utils')
 class Post {
     constructor(owner_id, title, coverImg, content, tags) {
         this.owner_id = new ObjectId(owner_id);
@@ -12,6 +12,7 @@ class Post {
         this.tags = tags;
         this.createdAt = generateTime();
         this.lastmodified = generateTime();
+        this.keyString = generateKeyString();
     }
 }
 

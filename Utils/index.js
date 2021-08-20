@@ -18,4 +18,8 @@ const checkPassword = (password, salt, passwordInDb) => {
     }
 }
 
-module.exports = { generateTime, generatePassword, checkPassword }
+const generateKeyString = () => {
+    return Math.random().toString(36).substring(2, 7);
+}
+
+module.exports = { generateTime, generatePassword, checkPassword, generateKeyString }
