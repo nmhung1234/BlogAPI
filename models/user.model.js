@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken")
 const { generateTime } = require('../Utils');
-require('dotenv').config();
 class User {
     constructor(email, password, username, salt) {
         this.email = email;
