@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const express = require('express');
+import jwt from 'jsonwebtoken';
+import express from 'express';
 const router = express.Router();
 
 
@@ -22,4 +22,4 @@ router.post('/refreshToken', (req, res) => {
         res.send({ token })
     })
 })
-module.exports = router
+export default router;

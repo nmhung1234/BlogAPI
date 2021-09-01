@@ -1,7 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const UserServices = require('./../../../services/user.service');
+import express from 'express';
+import UserServices from './../../../services/user.service.js';
+
 const UserSv = new UserServices();
+const router = express.Router();
 
 router.post('/login', async (req, res) => {
     const username = req.body.username;
@@ -12,4 +13,4 @@ router.post('/login', async (req, res) => {
 
 });
 
-module.exports = router
+export default router;

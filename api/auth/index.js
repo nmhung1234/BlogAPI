@@ -1,7 +1,7 @@
-const express = require('express');
-const register = require('./register');
-const login = require('./login');
-const refreshToken = require('./refreshToken');
+import express from 'express';
+import register from './register/index.js';
+import login from './login/index.js';
+import refreshToken from './refreshToken/index.js';
 
 const router = express.Router();
 
@@ -9,4 +9,5 @@ router.use(register);
 router.use(login);
 router.use(refreshToken);
 
-module.exports = router;
+export default router;
+

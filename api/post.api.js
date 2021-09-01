@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
+import UserServices from './../services/user.service.js';
+import PostServices from './../services/post.service.js';
 const router = express.Router();
-const UserServices = require('./../services/user.service');
-const PostServices = require('./../services/post.service');
 const UserSv = new UserServices();
 const PostSv = new PostServices();
 
@@ -23,11 +23,11 @@ router.get('/post', async (req, res) => {
 })
 
 router.get('/post/detail', async (req, res) => {
-    const username = req.body.username;
-    const slugString = req.body.slugString;
-    const result = await PostSv.getDetailPost(username,slugString);
+    const username = req.query.username;
+    const slugString = req.query.slugString;
+    const result = await PostSv.getDetailPost(username, slugString);
     res.send(result);
 
 })
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const { ObjectId } = require('mongodb')
-const { generateTime, generateKeyString, slug } = require('../Utils')
-class Post {
+import { ObjectId } from 'mongodb';
+import { generateTime, generateKeyString, slug } from '../Utils/index.js';
+export default class Post {
     constructor(owner_id, title, coverImg, content, tags) {
         this.owner_id = new ObjectId(owner_id);
         this.title = title;
@@ -15,5 +15,3 @@ class Post {
         this.slugString = slug(title) + "-" + generateKeyString();
     }
 }
-
-module.exports = Post;

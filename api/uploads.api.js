@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
+import formidable from 'formidable';
+import cloudinary from './../config/Cloudinary.js';
+import { db } from './../repositories/index.js';
 const router = express.Router();
-const formidable = require('formidable');
-const cloudinary = require('./../config/Cloudinary');
-const { db } = require('./../repositories');
 
 router.post('/upload', async function (req, res) {
   const form = formidable();
@@ -18,4 +18,4 @@ router.get('/upload/tag', async (req, res) => {
   const tag = await resp.toArray();
   res.send(tag)
 })
-module.exports = router
+export default router;

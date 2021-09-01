@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken")
-const { generateTime } = require('../Utils');
-class User {
+import jwt from "jsonwebtoken";
+import { generateTime } from '../Utils/index.js';
+export default class User {
     constructor(email, password, username, salt) {
         this.email = email;
         this.username = username;
@@ -32,4 +32,3 @@ class User {
     }
 
 }
-module.exports = User;

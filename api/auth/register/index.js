@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
+import UserServices from './../../../services/user.service.js';
 const router = express.Router();
-const UserServices = require('./../../../services/user.service')
-const UserSv = new UserServices();``
+const UserSv = new UserServices();
 
 router.post('/register', async function (req, res) {
     const username = req.body.username;
@@ -12,4 +12,4 @@ router.post('/register', async function (req, res) {
     res.send(newUser);
 })
 
-module.exports = router;
+export default router;

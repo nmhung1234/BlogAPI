@@ -1,15 +1,15 @@
-const crypto = require('crypto');
-const colors = require('colors');
+import crypto from 'crypto';
+import colors from 'colors';
 
-const generateTime = () => new Date().toISOString();
+export const generateTime = () => new Date().toISOString();
 
-const generatePassword = (password) => {
+export const generatePassword = (password) => {
     const salt = crypto.randomBytes(128).toString("base64");
     const hassedPassword = crypto.pbkdf2Sync(password, salt, 10000, 256, "sha512").toString("base64");
     return { salt, hassedPassword }
 };
 
-const checkPassword = (password, salt, passwordInDb) => {
+export const checkPassword = (password, salt, passwordInDb) => {
     const hassedPassword = crypto.pbkdf2Sync(password, salt, 10000, 256, "sha512").toString("base64");
     if (hassedPassword == passwordInDb) {
         return true;
@@ -18,11 +18,11 @@ const checkPassword = (password, salt, passwordInDb) => {
     }
 }
 
-const generateKeyString = () => {
+export const generateKeyString = () => {
     return Math.random().toString(36).substring(2, 7);
 }
 
-const slug = (str) => {
+export const slug = (str) => {
     //Đổi chữ hoa thành chữ thường
     str = str.toLowerCase();
 
@@ -52,4 +52,3 @@ const slug = (str) => {
     return str;
 }
 
-module.exports = { generateTime, generatePassword, checkPassword, generateKeyString, slug }

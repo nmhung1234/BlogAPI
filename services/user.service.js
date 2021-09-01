@@ -1,10 +1,10 @@
 
-const { db } = require('../repositories');
-const Post = require('./../models/post.model');
-const User = require('./../models/user.model');
-const { generatePassword, checkPassword } = require('./../Utils');
+import { db } from '../repositories/index.js';
+import Post from './../models/post.model.js';
+import User from './../models/user.model.js';
+import { generatePassword, checkPassword } from './../Utils/index.js';
 const UserModal = new User();
-class UserServices {
+export default class UserServices {
     async login(username, password) {
 
         const userFound = await db.user.findOne({ username: username });
@@ -138,4 +138,3 @@ class UserServices {
         }
     }
 }
-module.exports = UserServices;

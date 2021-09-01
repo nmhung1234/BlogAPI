@@ -1,6 +1,5 @@
-const { db } = require('../repositories');
-
-class PostServices {
+import { db } from '../repositories/index.js';
+export default class PostServices {
 
     async getDetailPost(username, slugString) {
         const result = await db.user.aggregate([
@@ -44,5 +43,3 @@ class PostServices {
         }
     }
 }
-
-module.exports = PostServices;
