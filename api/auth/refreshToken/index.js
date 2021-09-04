@@ -5,12 +5,10 @@ const router = express.Router();
 
 
 router.post('/refreshToken', (req, res) => {
-    const refreshToken = req.body.refreshToken;
+    const { refreshToken } = req.body;
     jwt.verify(refreshToken, process.env.PRIVATE_KEY, (err, decoded) => {
         if (decoded) {
-            const id = decoded.id;
-            const username = decoded.username;
-            const type = decoded.type;
+            const { id, username, type } = decoded;
             const token = jwt.sign({
                 id, username, type
             }, process.env.PRIVATE_KEY, {

@@ -4,16 +4,15 @@ const router = express.Router();
 const UserSv = new UserServices();
 
 router.post('/register', async function (req, res) {
-    const username = req.body.username;
-    const password = req.body.password;
-    const email = req.body.email;
+    const { username, password, email } = req.body;
     const newUser = await UserSv.register(email, username, password);
     res.send(newUser);
 })
-router.get('/register', async function (req, res) {
-    const token = req.params;
+router.get('/verify-account', async function (req, res) {
+    const { token } = req.query;
     console.log(token);
-    
+    const result = await UserSv.confirmEmail(token);
+    res.send(result);
 })
 
 export default router;

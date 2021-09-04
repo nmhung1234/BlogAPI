@@ -7,7 +7,6 @@ export const authorization = (req, res, next) => {
         res.send(AuthError.TOKEN_NOT_FOUND);
     } else {
         jwt.verify(Authorization, process.env.PRIVATE_KEY, (err, decoded) => {
-
             if (decoded) {
                 req.decoded = decoded;
                 console.log(`decoded>>${decoded}`);

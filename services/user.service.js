@@ -1,9 +1,12 @@
 
+import jwt from "jsonwebtoken";
+import { ObjectId } from 'mongodb';
 import { db } from '../repositories/index.js';
 import signUpTemplate from '../template/signUp.template.js';
 import User from './../models/user.model.js';
 import { generatePassword, checkPassword, sendMail } from './../Utils/index.js';
-import { UserError } from './../common/error/index.js';
+import { AuthError, CommonError, UserError } from './../common/error/index.js';
+import { UserStatus } from './../common/enum.js';
 const UserModal = new User();
 export default class UserServices {
     async login(username, password) {
@@ -70,5 +73,26 @@ export default class UserServices {
         } catch (error) {
             return error || UserError.UNKNOWN_ERROR
         }
+    }
+    async confirmEmail(tokenParam) {
+        jwt.verify(tokenParam, process.env.PRIVATE_KEY, (err, decoded) => {
+            if (decoded) {
+                try {
+                    const id = decoded.id;
+                    console.log(id);
+                    const username = decoded.username;
+                    const type = decoded.type;
+                    console.log(id);
+                    db.user.updateOne({ _id: ObjectId(id) }, { $set: { status: UserStatus.VERIFY } });
+                    return true
+                } catch (error) {
+                    return err || CommonError.UNKNOWN_ERROR
+                }
+            } else if (err.message == "jwt expired") {
+                return(AuthError.TOKEN_EXPIRED);
+            } else {
+                return(AuthError.TOKEN_INVALID)
+            }
+        })
     }
 }
