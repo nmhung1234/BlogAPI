@@ -7,9 +7,13 @@ router.post('/register', async function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
-
     const newUser = await UserSv.register(email, username, password);
     res.send(newUser);
+})
+router.get('/register', async function (req, res) {
+    const token = req.params;
+    console.log(token);
+    
 })
 
 export default router;

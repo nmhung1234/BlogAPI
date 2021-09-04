@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { UserStatus, UserType } from "../common/enum.js";
 import { generateTime } from '../Utils/index.js';
 export default class User {
     constructor(email, password, username, salt) {
@@ -9,7 +10,8 @@ export default class User {
         this.description = '';
         this.favoriteTopic = null;
         this.avatar = null;
-        this.type = 0;
+        this.type = UserType.USER;
+        this.status = UserStatus.UNVERIFY;
         this.password = password;
         this.salt = salt;
         this.createdAt = generateTime();

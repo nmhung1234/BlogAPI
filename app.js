@@ -7,8 +7,8 @@ import { initDatabase } from './repositories/index.js';
 import API from './api/index.js';
 
 dotenv.config();
-const app = express();
 const PORT = process.env.PORT || 8080;
+const app = express();
 app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));

@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import colors from 'colors';
+import nodeMailer from 'nodemailer';
 
 export const generateTime = () => new Date().toISOString();
 
@@ -52,3 +52,20 @@ export const slug = (str) => {
     return str;
 }
 
+export const sendMail = (mailOptions) => {
+    let transporter = nodeMailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.EMAIL_SERVER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Email sent: " + info.response);
+        }
+    });
+}

@@ -1,19 +1,22 @@
 import jwt from "jsonwebtoken";
+import { AuthError } from "../common/error/index.js";
 
 export const authorization = (req, res, next) => {
     const Authorization = req.headers.authorization;
     if (!Authorization) {
-        res.status(404).send("Token not found");
+        res.send(AuthError.TOKEN_NOT_FOUND);
     } else {
         jwt.verify(Authorization, process.env.PRIVATE_KEY, (err, decoded) => {
-            if (err) {
-                console.error(err.toString());
-                //if (err) throw new Error(err)
-                return res.status(401).json({ "error": true, "message": 'Unauthorized access.', err });
+
+            if (decoded) {
+                req.decoded = decoded;
+                console.log(`decoded>>${decoded}`);
+                next();
+            } else if (err.message == "jwt expired") {
+                res.send(AuthError.TOKEN_EXPIRED);
+            } else {
+                res.send(AuthError.TOKEN_INVALID)
             }
-            console.log(`decoded>>${decoded}`);
-            req.decoded = decoded;
-            next();
         });
     }
 }

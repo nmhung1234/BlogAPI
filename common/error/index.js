@@ -15,12 +15,20 @@ export const UserError = {
         message: 'Không tìm thấy người dùng này.',
         errorCode: 400,
     },
+    LOGIN_WRONG_USERNAME: {
+        message: 'Username đăng nhập không chính xác, vui lòng kiểm tra lại.',
+        code: 400,
+    },
     LOGIN_WRONG_PASSWORD: {
-        message: 'Email hoặc mật khẩu đăng nhập không chính xác, vui lòng kiểm tra lại.',
+        message: 'Mật khẩu đăng nhập không chính xác, vui lòng kiểm tra lại.',
         code: 400,
     },
     USER_EXISTING: {
         message: 'Người dùng đã tồn tại.',
+        code: 400,
+    },
+    EMAIL_EXISTING: {
+        message: 'Email đã tồn tại.',
         code: 400,
     },
     EMAIL_FORMAT: {
@@ -39,7 +47,7 @@ export const UserError = {
         message: 'Không tìm thấy mã xác nhận.',
         errorCode: 400,
     },
-    ACCOUNT_DELETE: {
+    ACCOUNT_LOCKED: {
         message: 'Tài khoản đã bị khóa, vui lòng liên hệ với admin để nhận được hỗ trợ.',
         errorCode: 400,
     },
@@ -89,38 +97,6 @@ export const CommonError = {
         message: 'Lỗi không xác định. Vui lòng liên hệ với đội ngũ admin hoặc kỹ thuật viên.',
         errorCode: 500,
     },
-};
-
-export const TopicCategoryError = {
-    TOPIC_CATE_NOT_FOUND: {
-        message: 'Không tìm thấy danh mục topic.',
-        errorCode: 400,
-    },
-
-};
-
-export const TopicError = {
-    TOPIC_NOT_FOUND: {
-        message: 'Không tìm thấy topic.',
-        errorCode: 400,
-    },
-
-};
-
-export const NoteError = {
-    NOTE_NOT_FOUND: {
-        message: 'Không tìm thấy note.',
-        errorCode: 400,
-    },
-
-};
-
-export const StoryError = {
-    STORY_NOT_FOUND: {
-        message: 'Không tìm thấy khoảng khắc.',
-        errorCode: 400,
-    },
-
 };
 
 export const AdminError = {
@@ -217,29 +193,6 @@ export const DoctorError = {
     },
 };
 
-export const ClassError = {
-    CLASS_NOT_FOUND: {
-        message: 'Lớp không tồn tại.',
-        errorCode: 400,
-    },
-    CAN_JOIN_CLASS: {
-        message: 'Không thể tham gia lớp này.',
-        errorCode: 400,
-    },
-    NOT_IN_CLASS: {
-        message: 'Không có quyền truy cập lớp này.',
-        errorCode: 400,
-    },
-    CAN_NOT_MODIFIED_CLASS: {
-        message: 'Không có quyền tùy chỉnh lớp này.',
-        errorCode: 400,
-    },
-    JOINED_CLASS: {
-        message: 'Đã tham gia vào lớp. ',
-        errorCode: 400,
-    },
-};
-
 export const PostError = {
     POST_NOT_FOUND: {
         message: 'Bài viết không tồn tại.',
@@ -248,6 +201,10 @@ export const PostError = {
     ACCESS_NOT_FOUND: {
         message: 'Bạn không có quyền chỉnh sửa bài viết.',
         errorCode: 400,
+    },
+    UNKNOWN_ERROR: {
+        message: 'Đã có lỗi xảy ra, vui lòng thử lại sau.',
+        errorCode: 500,
     },
 };
 

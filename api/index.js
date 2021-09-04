@@ -7,9 +7,9 @@ import { authorization } from './../middleware/authorization.js'
 const router = express.Router();
 
 router.use('/api', authAPI);
-router.use('/api', userAPI);
-router.use('/api', postAPI);
-router.use('/api', uploadfileAPI);
+router.use('/api',authorization, userAPI);
+router.use('/api',authorization, postAPI);
+router.use('/api',authorization, uploadfileAPI);
 
 
 export default router;
