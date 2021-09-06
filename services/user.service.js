@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 import { db } from '../repositories/index.js';
 import signUpTemplate from '../template/signUp.template.js';
 import User from './../models/user.model.js';
-import { generatePassword, checkPassword, sendMail } from './../Utils/index.js';
+import { generatePassword, checkPassword, sendMail, responseSuccess, responseError } from './../Utils/index.js';
 import { AuthError, CommonError, UserError } from './../common/error/index.js';
 import { UserStatus } from './../common/enum.js';
 const UserModal = new User();
@@ -28,22 +28,21 @@ export default class UserServices {
                     if (user[0].status == 0) {
                         return UserError.LOGIN_SNS_VERIFY_EMAIL
                     } else if (user[0].status == 1) {
+                        const userData = user[0];
                         const token = UserModal.generateToken(userFound._id, userFound.username, userFound.type)
                         const refreshToken = UserModal.generateRefreshToken(userFound._id, userFound.username, userFound.type)
-                        return {
-                            user, token, refreshToken
-                        }
+                        return responseSuccess({ userData, token, refreshToken })
                     } else {
-                        return UserError.ACCOUNT_LOCKED
+                        return responseError(UserError.ACCOUNT_LOCKED)
                     }
                 } else {
-                    return UserError.LOGIN_WRONG_PASSWORD;
+                    return responseError(UserError.LOGIN_WRONG_PASSWORD);
                 }
             } else {
-                return UserError.LOGIN_WRONG_USERNAME
+                return responseError(UserError.LOGIN_WRONG_USERNAME)
             }
         } catch (error) {
-            return err || UserError.UNKNOWN_ERROR
+            return responseError(error || UserError.UNKNOWN_ERROR)
         }
     }
     async register(email, username, password) {
@@ -68,10 +67,10 @@ export default class UserServices {
                 }
 
                 await sendMail(mailOptions);
-                return { message: "Đăng ký thành công. Vui lòng kiểm tra Email" };
+                return responseSuccess("","Đăng ký thành công. Vui lòng kiểm tra Email");
             }
         } catch (error) {
-            return error || UserError.UNKNOWN_ERROR
+            return responseError(error || UserError.UNKNOWN_ERROR)
         }
     }
     async confirmEmail(tokenParam) {
@@ -79,19 +78,17 @@ export default class UserServices {
             if (decoded) {
                 try {
                     const id = decoded.id;
-                    console.log(id);
                     const username = decoded.username;
                     const type = decoded.type;
-                    console.log(id);
                     db.user.updateOne({ _id: ObjectId(id) }, { $set: { status: UserStatus.VERIFY } });
-                    return true
+                    return responseSuccess("", "Xác minh thành công")
                 } catch (error) {
-                    return err || CommonError.UNKNOWN_ERROR
+                    return responseError(error || CommonError.UNKNOWN_ERROR)
                 }
             } else if (err.message == "jwt expired") {
-                return(AuthError.TOKEN_EXPIRED);
+                return responseError(AuthError.TOKEN_EXPIRED);
             } else {
-                return(AuthError.TOKEN_INVALID)
+                return responseError(AuthError.TOKEN_INVALID)
             }
         })
     }

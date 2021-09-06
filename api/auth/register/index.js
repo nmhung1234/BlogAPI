@@ -5,8 +5,8 @@ const UserSv = new UserServices();
 
 router.post('/register', async function (req, res) {
     const { username, password, email } = req.body;
-    const newUser = await UserSv.register(email, username, password);
-    res.send(newUser);
+    const result = await UserSv.register(email, username, password);
+    res.send(result);
 })
 router.get('/verify-account', async function (req, res) {
     const { token } = req.query;

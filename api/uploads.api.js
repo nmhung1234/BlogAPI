@@ -15,7 +15,7 @@ router.post('/upload', async function (req, res) {
 })
 router.get('/upload/tag', async (req, res) => {
   const resp = db.tag.find({});
-  const tag = await resp.toArray();
-  res.send(tag)
+  const result = await resp.toArray();
+  res.send(result)
 })
 export default router;

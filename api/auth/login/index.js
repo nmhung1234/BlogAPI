@@ -6,9 +6,8 @@ const router = express.Router();
 
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
-
-    let logedIn = await UserSv.login(username, password);
-    res.send(logedIn);
+    const result = await UserSv.login(username, password);
+    res.send(result);
 
 });
 

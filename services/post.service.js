@@ -1,5 +1,6 @@
 import { PostError } from '../common/error/index.js';
 import { db } from '../repositories/index.js';
+import { responseError, responseSuccess } from '../Utils/index.js';
 import Post from './../models/post.model.js';
 
 export default class PostServices {
@@ -38,25 +39,25 @@ export default class PostServices {
                     }
                 }
             ]).toArray();
-            return result
+            return responseSuccess(result)
         } catch (error) {
-            return error || PostError.POST_NOT_FOUND
+            return responseError(error || PostError.POST_NOT_FOUND)
         }
     }
     async upPost(owner_id, title, coverImg, content, tags) {
         try {
             const newPost = new Post(owner_id, title, coverImg, content, tags);
             await db.post.insertOne(newPost);
-            return newPost;
+            return responseSuccess(newPost);
         } catch (error) {
-            return error || PostError.UNKNOWN_ERROR
+            return responseError(error || PostError.POST_NOT_FOUND)
         }
     }
 
     async getPost(page, limit) {
         //trả về thông tin của chủ sở hữu bài viết
         try {
-            const ss = await db.post.aggregate([
+            const result = await db.post.aggregate([
                 {
                     $skip: page * limit
                 },
@@ -120,10 +121,9 @@ export default class PostServices {
                 },
 
             ]).toArray();
-            const dataRes = { data: ss, status: "Success", statusCode: 200 };
-            return dataRes;
+            return responseSuccess(result);
         } catch (error) {
-            return error || PostError.UNKNOWN_ERROR
+            return responseError(error || PostError.POST_NOT_FOUND)
         }
     }
 }

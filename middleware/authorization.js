@@ -3,6 +3,7 @@ import { AuthError } from "../common/error/index.js";
 
 export const authorization = (req, res, next) => {
     const Authorization = req.headers.authorization;
+    console.log("authen");
     if (!Authorization) {
         res.send(AuthError.TOKEN_NOT_FOUND);
     } else {

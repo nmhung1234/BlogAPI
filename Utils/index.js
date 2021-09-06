@@ -69,3 +69,40 @@ export const sendMail = (mailOptions) => {
         }
     });
 }
+
+export const logRequest = (req, res, next) => {
+    const { method, originalUrl, params, query, body } = req;
+    switch (method) {
+        case 'GET': {
+            console.log("Method:".blue, method, "|", "url:".blue, originalUrl, "|", "query:".blue, query);
+            break;
+        }
+        case 'POST': {
+            console.log("Method:".blue, method, "|", "url:".blue, originalUrl, "|", "Body:".blue, body);
+            break;
+        }
+        case 'PUT': {
+            console.log("Method:".blue, method, "|", "url:".blue, originalUrl, "|", "params:".blue, params, "Body:", body);
+            break;
+        }
+        case 'DELETE': {
+            console.log("Method:".blue, method, "|", "url:".blue, originalUrl, "|", "params:".blue, params);
+            break;
+        }
+        default: break;
+    }
+    next();
+
+}
+
+export const responseSuccess = (data, message = "") => {
+    return { success: true, errorCode: 0, message: message, data }
+}
+export const responseError = (err) => {
+    return {
+        success: false,
+        errorCode: err.errorCode || 500,
+        message: err.message,
+        data: null
+    }
+}
