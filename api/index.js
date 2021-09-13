@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.use('/api', authAPI);
 router.use('/api', postAPI);
+router.use('/api', uploadfileAPI);
 router.use('/api',authorization, userAPI);
-router.use('/api',authorization, uploadfileAPI);
 
 
 export default router;

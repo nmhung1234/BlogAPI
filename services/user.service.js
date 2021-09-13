@@ -67,8 +67,26 @@ export default class UserServices {
                 }
 
                 await sendMail(mailOptions);
-                return responseSuccess("","Đăng ký thành công. Vui lòng kiểm tra Email");
+                return responseSuccess("", "Đăng ký thành công. Vui lòng kiểm tra Email");
             }
+        } catch (error) {
+            return responseError(error || UserError.UNKNOWN_ERROR)
+        }
+    }
+    async getUserData(username) {
+        try {
+            const data = await db.user.aggregate([
+                {
+                    '$match': {
+                        'username': `${username}`
+                    }
+                }, {
+                    '$unset': [
+                        'password', 'salt'
+                    ]
+                }
+            ]).toArray();
+            return responseSuccess(data);
         } catch (error) {
             return responseError(error || UserError.UNKNOWN_ERROR)
         }
