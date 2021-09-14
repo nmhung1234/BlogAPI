@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import crypto from 'crypto';
 import nodeMailer from 'nodemailer';
 
@@ -72,29 +73,28 @@ export const sendMail = (mailOptions) => {
 
 export const logRequest = (req, res, next) => {
     const { method, originalUrl, params, query, body } = req;
+    const timeRequest = new Date().toISOString();
     switch (method) {
         case 'GET': {
-            console.log("Method:".blue, method, "|", "url:".blue, originalUrl, "|", "query:".blue, query);
+            console.log(`[${timeRequest}]`,chalk.black.bgWhite("Method:"), chalk.black.bgGreen(method), "|", "url:", chalk.cyan(originalUrl), "|", "query:", query);
             break;
         }
         case 'POST': {
-            console.log("Method:".blue, method, "|", "url:".blue, originalUrl, "|", "Body:".blue, body);
+            console.log(`[${timeRequest}]`,chalk.black.bgWhite("Method:"), chalk.black.bgCyan(method), "|", "url:", chalk.cyan(originalUrl), "|", "Body:", body);
             break;
         }
         case 'PUT': {
-            console.log("Method:".blue, method, "|", "url:".blue, originalUrl, "|", "params:".blue, params, "Body:", body);
+            console.log(`[${timeRequest}]`,chalk.black.bgWhite("Method:"), chalk.black.bgYellow(method), "|", "url:", chalk.cyan(originalUrl), "|", "params:", params, "Body:", body);
             break;
         }
         case 'DELETE': {
-            console.log("Method:".blue, method, "|", "url:".blue, originalUrl, "|", "params:".blue, params);
+            console.log(`[${timeRequest}]`,chalk.black.bgWhite("Method:"), chalk.black.bgRed(method), "|", "url:", chalk.cyan(originalUrl), "|", "params:", params);
             break;
         }
         default: break;
     }
     next();
-
 }
-
 export const responseSuccess = (data, message = "") => {
     return { success: true, errorCode: 0, message: message, data }
 }

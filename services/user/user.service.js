@@ -1,12 +1,12 @@
 
 import jwt from "jsonwebtoken";
 import { ObjectId } from 'mongodb';
-import { db } from '../repositories/index.js';
-import signUpTemplate from '../template/signUp.template.js';
-import User from './../models/user.model.js';
-import { generatePassword, checkPassword, sendMail, responseSuccess, responseError } from './../Utils/index.js';
-import { AuthError, CommonError, UserError } from './../common/error/index.js';
-import { UserStatus } from './../common/enum.js';
+import { db } from '../../repositories/index.js';
+import signUpTemplate from '../../template/signUp.template.js';
+import User from '../../models/user.model.js';
+import { generatePassword, checkPassword, sendMail, responseSuccess, responseError } from '../../Utils/index.js';
+import { AuthError, CommonError, UserError } from '../../common/error/index.js';
+import { UserStatus } from '../../common/enum.js';
 const UserModal = new User();
 export default class UserServices {
     async login(username, password) {
@@ -91,7 +91,7 @@ export default class UserServices {
             return responseError(error || UserError.UNKNOWN_ERROR)
         }
     }
-    async confirmEmail(tokenParam) {
+    async verify(tokenParam) {
         jwt.verify(tokenParam, process.env.PRIVATE_KEY, (err, decoded) => {
             if (decoded) {
                 try {
@@ -107,6 +107,23 @@ export default class UserServices {
                 return responseError(AuthError.TOKEN_EXPIRED);
             } else {
                 return responseError(AuthError.TOKEN_INVALID)
+            }
+        })
+    }
+    async refreshToken(refreshToken) {
+        jwt.verify(refreshToken, process.env.PRIVATE_KEY, (err, decoded) => {
+            if (decoded) {
+                const { id, username, type } = decoded;
+                const token = jwt.sign({
+                    id, username, type
+                }, process.env.PRIVATE_KEY, {
+                    expiresIn: Number(process.env.TOKEN_LIFE)
+                })
+                return({ token })
+            } else if (err.message == "jwt expired") {
+                return(AuthError.TOKEN_EXPIRED);
+            } else {
+                return(AuthError.TOKEN_INVALID)
             }
         })
     }

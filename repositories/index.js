@@ -7,7 +7,7 @@ export const db = {
 };
 
 export const initDatabase = () => {
-    const URL = "mongodb+srv://nmhung:nmhung@learndb.kym7c.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+    const URL = process.env.MONGO_URI;
     const client = new MongoClient(URL);
     client.connect().then(() => {
         console.log("db connected");

@@ -1,7 +1,7 @@
-import { PostError } from '../common/error/index.js';
-import { db } from '../repositories/index.js';
-import { responseError, responseSuccess } from '../Utils/index.js';
-import Post from './../models/post.model.js';
+import { PostError } from '../../common/error/index.js';
+import { db } from '../../repositories/index.js';
+import { responseError, responseSuccess } from '../../Utils/index.js';
+import Post from '../../models/post.model.js';
 
 export default class PostServices {
     async getDetailPost(username, slugString) {
@@ -54,7 +54,7 @@ export default class PostServices {
         }
     }
 
-    async getPost(page, limit) {
+    async getListPreviewPost(page, limit) {
         //trả về thông tin của chủ sở hữu bài viết
         try {
             const result = await db.post.aggregate([
