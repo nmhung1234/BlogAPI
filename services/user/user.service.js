@@ -111,20 +111,19 @@ export default class UserServices {
         })
     }
     async refreshToken(refreshToken) {
-        jwt.verify(refreshToken, process.env.PRIVATE_KEY, (err, decoded) => {
-            if (decoded) {
-                const { id, username, type } = decoded;
-                const token = jwt.sign({
-                    id, username, type
-                }, process.env.PRIVATE_KEY, {
-                    expiresIn: Number(process.env.TOKEN_LIFE)
-                })
-                return({ token })
-            } else if (err.message == "jwt expired") {
-                return(AuthError.TOKEN_EXPIRED);
-            } else {
-                return(AuthError.TOKEN_INVALID)
-            }
-        })
+        const decoded = jwt.verify(refreshToken, process.env.PRIVATE_KEY);
+        if (decoded) {
+            const { id, username, type } = decoded;
+            const token = jwt.sign({
+                id, username, type
+            }, process.env.PRIVATE_KEY, {
+                expiresIn: Number(process.env.TOKEN_LIFE)
+            })
+            return(responseSuccess(token))
+        } else if (err.message == "jwt expired") {
+            return(responseError(err | AuthError.TOKEN_EXPIRED));
+        } else {
+            return(responseError(err | AuthError.TOKEN_INVALID))
+        }
     }
 }
