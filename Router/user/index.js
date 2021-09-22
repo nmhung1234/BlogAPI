@@ -3,4 +3,5 @@ import postRoutes from "./post.routes.js";
 import tagRoutes from "./tag.routes.js";
 import userRoutes from "./user.routes.js";
 
-export default [...userRoutes, ...tagRoutes, ...postRoutes, ...commonRoutes]
+const mergeRoute =  [...userRoutes, ...tagRoutes, ...postRoutes, ...commonRoutes];
+export default mergeRoute

@@ -14,7 +14,6 @@ export default class UserController {
     }
     async verify(req, res) {
         const { token } = req.query;
-        console.log(token);
         const result = await UserSv.verify(token);
         res.send(result);
     }

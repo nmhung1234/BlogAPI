@@ -1,7 +1,6 @@
 import PostServices from "../../services/user/post.service.js";
 
 const PostSv = new PostServices();
-
 export default class UserPostController {
     async upPost(req, res) {
         const { owner_id, title, coverImg, content, tags } = req.body;

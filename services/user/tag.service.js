@@ -5,9 +5,7 @@ export default class TagService {
     async getAllTag() {
         try {
             const resp = await db.tag.find({});
-            console.log(resp);
             const result = await resp.toArray();
-            console.log(result)
             return (responseSuccess(result));
         } catch (error) {
             return (responseError(error));
