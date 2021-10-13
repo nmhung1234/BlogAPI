@@ -2,17 +2,16 @@
   "name": "blog",
   "type": "module",
   "version": "1.0.0",
-  "description": "",
+  "description": "API for my Blog",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "nodemon --use_strict --max_old_space_size=1024 app.js #increase to 1gb"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.7.2",
     "cloudinary": "^1.26.3",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
