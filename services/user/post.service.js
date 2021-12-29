@@ -59,6 +59,11 @@ export default class PostServices {
         try {
             const result = await db.post.aggregate([
                 {
+                    $sort: {
+                        createdAt: -1
+                    }
+                },
+                {
                     $skip: page * limit
                 },
                 {
