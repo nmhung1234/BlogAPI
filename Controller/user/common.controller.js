@@ -7,7 +7,7 @@ export default class UserCommonController{
         form.parse(req, async (err, fields, files) => {
             try {
                 const result = await cloudinary.uploader.upload(files.file.path);
-                res.send(responseSuccess(result.url.replace("upload", "upload/e_blur:50,q_80")))
+                res.send(responseSuccess(result.url));
 
             } catch (error) {
                 res.send(responseError(error))
