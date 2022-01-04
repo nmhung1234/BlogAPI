@@ -1,5 +1,4 @@
 import { MongoClient } from 'mongodb';
-
 export const db = {
     user: null,
     post: null,
@@ -7,8 +6,8 @@ export const db = {
 };
 
 export const initDatabase = () => {
-    const URL = process.env.MONGO_URI;
-    const client = new MongoClient(URL);
+    const uri = process.env.MONGODB_URI;
+    const client = new MongoClient(uri);
     client.connect().then(() => {
         console.log("db connected");
         const connected = client.db("Blog");
