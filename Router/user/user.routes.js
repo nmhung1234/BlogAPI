@@ -38,5 +38,12 @@ export default [
         middleware: [Authorization],
         action: userController.getUserData,
     },
+    {
+        method: 'get',
+        route: '/api/user/activities',
+        controller: userController,
+        middleware: [Authorization],
+        action: userController.getActivities,
+    },
 
 ]

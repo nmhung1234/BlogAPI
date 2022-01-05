@@ -27,4 +27,9 @@ export default class UserController {
         const result = await UserSv.getUserData(username);
         res.send(result)
     }
+    async getActivities(req, res) {
+        const { username } = req.query;
+        const result = await UserSv.getActivities(username);
+        res.send(result);
+    }
 }

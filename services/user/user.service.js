@@ -73,24 +73,6 @@ export default class UserServices {
             return responseError(error || UserError.UNKNOWN_ERROR)
         }
     }
-    async getUserData(username) {
-        try {
-            const data = await db.user.aggregate([
-                {
-                    '$match': {
-                        'username': `${username}`
-                    }
-                }, {
-                    '$unset': [
-                        'password', 'salt'
-                    ]
-                }
-            ]).toArray();
-            return responseSuccess(data);
-        } catch (error) {
-            return responseError(error || UserError.UNKNOWN_ERROR)
-        }
-    }
     async verify(tokenParam) {
         jwt.verify(tokenParam, process.env.PRIVATE_KEY, (err, decoded) => {
             if (decoded) {
@@ -112,21 +94,56 @@ export default class UserServices {
     }
     async refreshToken(refreshToken) {
         try {
-            const decoded = jwt.verify(refreshToken, process.env.PRIVATE_KEY, {ignoreExpiration: true});
+            const decoded = jwt.verify(refreshToken, process.env.PRIVATE_KEY, { ignoreExpiration: true });
             const { id, username, type } = decoded;
             const token = jwt.sign({
                 id, username, type
             }, process.env.PRIVATE_KEY, {
                 expiresIn: Number(process.env.TOKEN_LIFE)
             })
-            return(responseSuccess(token))
+            return (responseSuccess(token))
         } catch (err) {
             // console.log(err);
             if (err.message == "jwt expired") {
-                return(responseError(AuthError.TOKEN_EXPIRED));
+                return (responseError(AuthError.TOKEN_EXPIRED));
             } else {
-                return(responseError(AuthError.TOKEN_INVALID))
+                return (responseError(AuthError.TOKEN_INVALID))
             }
+        }
+    }
+    async getUserData(username) {
+        try {
+            const data = await db.user.aggregate([
+                {
+                    '$match': {
+                        'username': `${username}`
+                    }
+                }, {
+                    '$unset': [
+                        'password', 'salt'
+                    ]
+                }
+            ]).toArray();
+            return responseSuccess(data);
+        } catch (error) {
+            return responseError(error || UserError.UNKNOWN_ERROR)
+        }
+    }
+    async getActivities(username) {
+
+        try {
+            const user = await db.user.findOne({ username: username });
+            const postPublished = await db.post.find({ owner_id: ObjectId(user._id) }).count();
+            const commentWritten = await db.post.find({ owner_id: ObjectId(user._id) });
+            const tagFollowing = user.favoriteTopic;
+            const result = {
+                postPublished,
+                commentWritten,
+                tagFollowing
+            };
+            return responseSuccess(result);
+        } catch (error) {
+            return responseError(error || UserError.UNKNOWN_ERROR)
         }
     }
 }
