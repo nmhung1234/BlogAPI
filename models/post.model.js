@@ -6,12 +6,12 @@ export default class Post {
         this.title = title;
         this.coverImg = coverImg;
         this.content = content;
-        this.comments = {};
+        this.comments = [];
         this.like = 0;
         this.views = 0;
         this.tags = tags;
         this.createdAt = generateTime();
-        this.lastmodified = generateTime();
-        this.slugString = slug(title) + "-" + generateKeyString();
+        this.lastModified = generateTime();
+        this.slug = slug(title) + "-" + generateKeyString();
     }
 }

@@ -14,8 +14,8 @@ export default class UserPostController {
         res.send(result);
     }
     async getDetailPost(req, res) {
-        const { username, slugString } = req.query;
-        const result = await PostSv.getDetailPost(username, slugString);
+        const { username, slug } = req.query;
+        const result = await PostSv.getDetailPost(username, slug);
         res.send(result);
     }
 }

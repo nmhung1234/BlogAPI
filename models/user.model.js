@@ -15,6 +15,7 @@ export default class User {
         this.password = password;
         this.salt = salt;
         this.createdAt = generateTime();
+        this.updateAt = generateTime();
     }
     generateToken(id, username, type) {
         const token = jwt.sign({

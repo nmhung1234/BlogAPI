@@ -4,7 +4,7 @@ import { responseError, responseSuccess } from '../../Utils/index.js';
 import Post from '../../models/post.model.js';
 
 export default class PostServices {
-    async getDetailPost(username, slugString) {
+    async getDetailPost(username, slug) {
         try {
             const result = await db.user.aggregate([
                 {
@@ -28,7 +28,7 @@ export default class PostServices {
                     }
                 }, {
                     '$match': {
-                        'owner_post.slugString': `${slugString}`
+                        'owner_post.slug': `${slug}`
                     }
                 }, {
                     '$lookup': {
