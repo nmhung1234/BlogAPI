@@ -17,12 +17,12 @@ export default class UserController {
         const result = await UserSv.verify(token);
         res.send(result);
     }
-    async refreshToken(req, res){
+    async refreshToken(req, res) {
         const { refreshToken } = req.body;
         const result = await UserSv.refreshToken(refreshToken);
         res.send(result);
     }
-    async getUserData(req, res){
+    async getUserData(req, res) {
         const { username } = req.query;
         const result = await UserSv.getUserData(username);
         res.send(result)
@@ -30,6 +30,13 @@ export default class UserController {
     async getActivities(req, res) {
         const { username } = req.query;
         const result = await UserSv.getActivities(username);
+        res.send(result);
+    }
+    async getMyPostPublished(req, res) {
+        const { username } = req.query;
+        const page = Number(req.query.page) - 1;
+        const limit = Number(req.query.limit);
+        const result = await UserSv.getMyPostPublished(username, page, limit);
         res.send(result);
     }
 }

@@ -59,72 +59,36 @@ export default class PostServices {
         try {
             const result = await db.post.aggregate([
                 {
-                    $sort: {
-                        createdAt: -1
+                    '$sort': {
+                        'createdAt': -1
                     }
-                },
-                {
-                    $skip: page * limit
-                },
-                {
-                    $limit: limit
-                },
-                {
-                    $lookup: {
-                        from: 'tag',
-                        localField: 'tags',
-                        foreignField: 'name',
-                        as: 'tag'
+                }, {
+                    '$skip': page * limit
+                }, {
+                    '$limit': limit
+                }, {
+                    '$lookup': {
+                        'from': 'tag',
+                        'localField': 'tags',
+                        'foreignField': 'name',
+                        'as': 'tags'
                     }
-                },
-                {
-                    $unwind: {
-                        path: '$tag'
+                }, {
+                    '$lookup': {
+                        'from': 'user',
+                        'localField': 'owner_id',
+                        'foreignField': '_id',
+                        'as': 'ownerData'
                     }
-                },
-                {
-                    $group: {
-                        _id: "$_id",
-                        tags: {
-                            $push: "$tag"
-                        }
+                }, {
+                    '$unwind': {
+                        'path': '$ownerData'
                     }
-                },
-                {
-                    $lookup: {
-                        from: 'post',
-                        localField: '_id',
-                        foreignField: '_id',
-                        as: 'postData'
-                    }
-                },
-                {
-                    $unwind: {
-                        path: "$postData"
-                    }
-                },
-                {
-                    $sort: {
-                        postData: -1
-                    }
-                },
-                {
-                    $lookup: {
-                        from: 'user',
-                        localField: 'postData.owner_id',
-                        foreignField: '_id',
-                        as: 'ownerData'
-                    }
-                },
-                {
-                    $unwind: {
-                        path: '$ownerData'
-                    }
-                },
-                {
-                    $unset: ['ownerData.password', 'ownerData.salt', "_id"]
-                },
-
+                }, {
+                    '$unset': [
+                        'ownerData.password', 'ownerData.salt', '_id', 'ownerData.type', 'ownerData.status'
+                    ]
+                }
             ]).toArray();
             return responseSuccess(result);
         } catch (error) {
