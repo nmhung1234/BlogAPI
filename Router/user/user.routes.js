@@ -45,5 +45,11 @@ export default [
         middleware: [Authorization],
         action: userController.getActivities,
     },
-
+    {
+        method: 'get',
+        route: '/api/user/my-post-published',
+        controller: userController,
+        middleware: [Authorization],
+        action: userController.getMyPostPublished,
+    },
 ]

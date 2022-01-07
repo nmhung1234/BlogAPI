@@ -143,7 +143,26 @@ export default class UserServices {
             };
             return responseSuccess(result);
         } catch (error) {
-            return responseError(error || UserError.UNKNOWN_ERROR)
+            return responseError(error || CommonError.UNKNOWN_ERROR)
+        }
+    }
+    async getMyPostPublished(username, page, limit) {
+        try {
+            const user = await db.user.findOne({ username: username });
+            let result = await db.post.find({ owner_id: ObjectId(user._id) })
+                .skip(page * limit).limit(limit).sort({ createdAt: 1 }).toArray();
+            const tagResult = await db.tag.find({}).toArray();
+
+            result = result.map((post) => {
+                post.tags = post.tags.map(tagInPost => {
+                    const filterTag = tagResult.filter(tagDetail => tagDetail.name == tagInPost);
+                    return tagInPost = { ...filterTag[0] };
+                })
+                return { ...post, tags: post.tags };
+            })
+            return responseSuccess(result);
+        } catch (error) {
+            return responseError(error || CommonError.UNKNOWN_ERROR)
         }
     }
 }
