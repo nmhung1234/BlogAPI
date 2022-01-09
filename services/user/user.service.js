@@ -129,37 +129,42 @@ export default class UserServices {
             return responseError(error || UserError.UNKNOWN_ERROR)
         }
     }
-    async getActivities(username) {
-
+    async getActivities(idUser) {
         try {
-            const user = await db.user.findOne({ username: username });
-            const postPublished = await db.post.find({ owner_id: ObjectId(user._id) }).count();
-            const commentWritten = await db.post.find({ owner_id: ObjectId(user._id) });
-            const tagFollowing = user.favoriteTopic;
+            const postPublished = await db.post.find({ owner_id: ObjectId(idUser) }).count();
+            const commentWritten = await db.post.find({ owner_id: ObjectId(idUser) });
             const result = {
                 postPublished,
                 commentWritten,
-                tagFollowing
             };
             return responseSuccess(result);
         } catch (error) {
             return responseError(error || CommonError.UNKNOWN_ERROR)
         }
     }
-    async getMyPostPublished(username, page, limit) {
+    async getMyPostPublished(idUser, page, limit) {
         try {
-            const user = await db.user.findOne({ username: username });
-            let result = await db.post.find({ owner_id: ObjectId(user._id) })
-                .skip(page * limit).limit(limit).sort({ createdAt: 1 }).toArray();
-            const tagResult = await db.tag.find({}).toArray();
-
-            result = result.map((post) => {
-                post.tags = post.tags.map(tagInPost => {
-                    const filterTag = tagResult.filter(tagDetail => tagDetail.name == tagInPost);
-                    return tagInPost = { ...filterTag[0] };
-                })
-                return { ...post, tags: post.tags };
-            })
+            const result = await db.post.aggregate([
+                {
+                    '$match': {
+                        'owner_id': new ObjectId(`${idUser}`)
+                    }
+                },
+                {
+                    '$sort': {
+                        'createdAt': -1
+                    }
+                }, {
+                    '$skip': page * limit
+                }, {
+                    '$lookup': {
+                        'from': 'tag',
+                        'localField': 'tags',
+                        'foreignField': 'name',
+                        'as': 'tags'
+                    }
+                }
+            ]).toArray();
             return responseSuccess(result);
         } catch (error) {
             return responseError(error || CommonError.UNKNOWN_ERROR)

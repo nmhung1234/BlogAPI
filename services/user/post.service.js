@@ -35,10 +35,13 @@ export default class PostServices {
                         'from': 'tag',
                         'localField': 'owner_post.tags',
                         'foreignField': 'name',
-                        'as': 'tags'
+                        'as': 'owner_post.tags'
                     }
                 }
             ]).toArray();
+            if (result.length === 0) {
+                return responseError(PostError.POST_NOT_FOUND);
+            }
             return responseSuccess(result)
         } catch (error) {
             return responseError(error || PostError.POST_NOT_FOUND)

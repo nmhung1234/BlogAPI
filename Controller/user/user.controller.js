@@ -28,15 +28,15 @@ export default class UserController {
         res.send(result)
     }
     async getActivities(req, res) {
-        const { username } = req.query;
-        const result = await UserSv.getActivities(username);
+        const { id } = req.query;
+        const result = await UserSv.getActivities(id);
         res.send(result);
     }
     async getMyPostPublished(req, res) {
-        const { username } = req.query;
+        const { id } = req.query;
         const page = Number(req.query.page) - 1;
         const limit = Number(req.query.limit);
-        const result = await UserSv.getMyPostPublished(username, page, limit);
+        const result = await UserSv.getMyPostPublished(id, page, limit);
         res.send(result);
     }
 }
